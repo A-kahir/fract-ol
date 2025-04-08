@@ -19,8 +19,8 @@
 # include <math.h>
 # include "../minilibx_opengl_20191021/mlx.h"
 
-# define WIDTH 900
-# define HEIGHT 700
+# define WIDTH 800
+# define HEIGHT 600
 # define MAX_ITERATIONS 100
 
 typedef struct s_complex

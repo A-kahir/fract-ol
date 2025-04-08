@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akahir <akahir@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/08 20:42:50 by akahir            #+#    #+#             */
+/*   Updated: 2025/04/08 20:42:50 by akahir           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
 static void	pixel_put(t_data *data, int x, int y, int color)
@@ -12,24 +24,23 @@ static void	pixel_put(t_data *data, int x, int y, int color)
 	}
 }
 
-static int create_trgb(int t, int r, int b)
+static	int	create_trgb(int t, int r, int b)
 {
-    return (t << 24 | r << 16 | b);
+	return (t << 24 | r << 16 | b);
 }
 
-static int get_color(int iterations, int max_iter)
+static	int	get_color(int iterations, int max_iter)
 {
-    double t;
-    int r;
-	int b;
+	double	t;
+	int		r;
+	int		b;
 
-    if (iterations == max_iter)
-        return (0);
-
-    t = (double)iterations / max_iter;
-    r = (int)(60 * (1 - t) * t * t * 255);
-    b = (int)(255 * (1 - t) * (1 - t) * (1 - t) * t);
-    return (create_trgb(0, r, b));
+	if (iterations == max_iter)
+		return (0);
+	t = (double)iterations / max_iter;
+	r = (int)(60 * (1 - t) * t * t * 255);
+	b = (int)(255 * (1 - t) * (1 - t) * (1 - t) * t);
+	return (create_trgb(0, r, b));
 }
 
 void	render_fractal(t_data *data)
@@ -54,8 +65,7 @@ void	render_fractal(t_data *data)
 				iterations = mandelbrot(c, MAX_ITERATIONS);
 			else if (data->fractal_type == 2)
 			{
-				z.real = c.real;
-				z.imag = c.imag;
+				(z.real = c.real, z.imag = c.imag);
 				iterations = julia(z, data->julia_k, MAX_ITERATIONS);
 			}
 			pixel_put(data, x, y, get_color(iterations, MAX_ITERATIONS));

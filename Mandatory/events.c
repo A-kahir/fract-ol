@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   events.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akahir <akahir@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/08 20:40:29 by akahir            #+#    #+#             */
+/*   Updated: 2025/04/08 20:40:29 by akahir           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
 int	close_window(t_data *data)
@@ -33,24 +45,24 @@ int	key_hook(int keycode, t_data *data)
 
 int	mouse_hook(int button, int x, int y, t_data *data)
 {
-	double	mouse_re;
-	double	mouse_im;
+	double	mousere;
+	double	mouseim;
 
-	mouse_re = (x - WIDTH / 2.0) / (0.5 * WIDTH * data->zoom) + data->offset_x;
-	mouse_im = (y - HEIGHT / 2.0) / (0.5 * HEIGHT * data->zoom) + data->offset_y;
+	mousere = (x - WIDTH / 2.0) / (0.5 * WIDTH * data->zoom) + data->offset_x;
+	mouseim = (y - HEIGHT / 2.0) / (0.5 * HEIGHT * data->zoom) + data->offset_y;
 	if (button == 4 || button == 5)
 	{
 		if (button == 4)
 		{
 			data->zoom *= 1.2;
-			data->offset_x = mouse_re - (mouse_re - data->offset_x) / 1.2;
-			data->offset_y = mouse_im - (mouse_im - data->offset_y) / 1.2;
+			data->offset_x = mousere - (mousere - data->offset_x) / 1.2;
+			data->offset_y = mouseim - (mouseim - data->offset_y) / 1.2;
 		}
 		else if (button == 5)
 		{
 			data->zoom /= 1.2;
-			data->offset_x = mouse_re - (mouse_re - data->offset_x) * 1.2;
-			data->offset_y = mouse_im - (mouse_im - data->offset_y) * 1.2;
+			data->offset_x = mousere - (mousere - data->offset_x) * 1.2;
+			data->offset_y = mouseim - (mouseim - data->offset_y) * 1.2;
 		}
 		render_fractal(data);
 		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
