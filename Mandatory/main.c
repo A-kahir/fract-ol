@@ -14,8 +14,8 @@
 
 static void	print_usage(void)
 {
-	write(1, "Usage: ./fractol [fractal_type]\n", 34);
-	write(1, "Available fractals:\n", 21);
+	write(1, "Usage: ./fractol [fractal_type]\n", 33);
+	write(1, "Available fractals_type:\n", 26);
 	write(1, "  1: Mandelbrot\n", 17);
 	write(1, "  2: Julia\n", 12);
 	exit(0);
