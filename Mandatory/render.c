@@ -1,6 +1,6 @@
 #include "fractol.h"
 
-void	pixel_put(t_data *data, int x, int y, int color)
+static void	pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
@@ -12,25 +12,24 @@ void	pixel_put(t_data *data, int x, int y, int color)
 	}
 }
 
-int	create_trgb(int t, int r, int g, int b)
+static int create_trgb(int t, int r, int b)
 {
-	return (t << 24 | r << 16 | g << 8 | b);
+    return (t << 24 | r << 16 | b);
 }
 
-int	get_color(int iterations, int max_iter)
+static int get_color(int iterations, int max_iter)
 {
-	double	t;
-	int		r;
-	int		g;
-	int		b;
+    double t;
+    int r;
+	int b;
 
-	if (iterations == max_iter)
-		return (0);
-	t = (double)iterations / max_iter;
-	r = (int)(9 * (1 - t) * t * t * t * 255);
-	g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
-	b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
-	return (create_trgb(0, r, g, b));
+    if (iterations == max_iter)
+        return (0);
+
+    t = (double)iterations / max_iter;
+    r = (int)(60 * (1 - t) * t * t * 255);
+    b = (int)(255 * (1 - t) * (1 - t) * (1 - t) * t);
+    return (create_trgb(0, r, b));
 }
 
 void	render_fractal(t_data *data)
@@ -59,8 +58,6 @@ void	render_fractal(t_data *data)
 				z.imag = c.imag;
 				iterations = julia(z, data->julia_k, MAX_ITERATIONS);
 			}
-			else
-				iterations = burning_ship(c, MAX_ITERATIONS);
 			pixel_put(data, x, y, get_color(iterations, MAX_ITERATIONS));
 			x++;
 		}

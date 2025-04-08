@@ -1,30 +1,33 @@
-NAME = fractol
-
-SRCS = main.c fractals.c render.c events.c
-OBJS = $(SRCS:.c=.o)
-
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-MLX_DIR = minilibx-linux
-MLXFLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm
-RM = rm -f
 
-all: $(NAME)
+NAME = fractol
 
-$(NAME): $(OBJS)
-	$(MAKE) -C $(MLX_DIR)  # Ensure MLX is compiled before linking
-	$(CC) $(OBJS) $(MLXFLAGS) -o $(NAME)
+SRCS = Mandatory/main.c Mandatory/fractals.c Mandatory/render.c Mandatory/events.c Mandatory/utils_func.c
+OBJS = $(SRCS:.c=.o)
+
+MLX_DIR = minilibx_opengl_20191021
+MLX_INCLUDE = -I$(MLX_DIR)
+MLX_LIB = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+
+all: $(MLX_DIR)/libmlx.a $(NAME)
+
+$(NAME): $(OBJS) Mandatory/fractol.h
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX_LIB)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) $(MLX_INCLUDE) -c $< -o $@
+
+$(MLX_DIR)/libmlx.a:
+	make -C $(MLX_DIR)
 
 clean:
-	$(RM) $(OBJS)
-	$(MAKE) -C $(MLX_DIR) clean  # Clean MLX objects too
+	rm -f $(OBJS)
+	make -C $(MLX_DIR) clean
 
 fclean: clean
-	$(RM) $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: clean fclean re all
+.PHONY: clean
