@@ -58,7 +58,7 @@ int		close_window(t_data *data);
 
 // Util functions
 double	ft_atoi(const char *str);
-int ft_strcmp(const char *s1, const char *s2);
-void mlx_functions(t_data data);
+int		ft_strcmp(const char *s1, const char *s2);
+void	mlx_functions(t_data data);
 
 #endif
