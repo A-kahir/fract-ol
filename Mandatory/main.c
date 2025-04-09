@@ -57,21 +57,16 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	ft_init_data(&data);
-	if (argc < 2)
+	if (argc == 1)
 		ft_print_usage();
+	ft_init_data(&data);
 	if (ft_strcmp(argv[1], "mandelbrot") == 0 && argc == 2)
 		data.fractal_type = 1;
 	else if (ft_strcmp(argv[1], "julia") == 0 && argc == 4)
 	{
 		data.fractal_type = 2;
-		if (argc == 4)
-		{
-			data.julia_k.real = ft_atoi(argv[2]);
-			data.julia_k.imag = ft_atoi(argv[3]);
-		}
-		else if (argc != 2)
-			ft_print_usage();
+		data.julia_k.real = ft_atoi(argv[2]);
+		data.julia_k.imag = ft_atoi(argv[3]);
 	}
 	else
 		ft_print_usage();
