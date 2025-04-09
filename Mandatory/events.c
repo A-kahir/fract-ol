@@ -38,7 +38,7 @@ int	key_hook(int keycode, t_data *data)
 		data->zoom *= 1.2;
 	else if (keycode == 27)
 		data->zoom /= 1.2;
-	render_fractal(data);
+	ft_render_fractal(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
@@ -64,7 +64,7 @@ int	mouse_hook(int button, int x, int y, t_data *data)
 			data->offset_x = mousere - (mousere - data->offset_x) * 1.2;
 			data->offset_y = mouseim - (mouseim - data->offset_y) * 1.2;
 		}
-		render_fractal(data);
+		ft_render_fractal(data);
 		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	}
 	return (0);

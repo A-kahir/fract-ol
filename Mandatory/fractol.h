@@ -14,7 +14,6 @@
 # define FRACTOL_H
 
 # include <stdlib.h>
-# include <stdio.h>
 # include <unistd.h>
 # include <math.h>
 # include "../minilibx_opengl_20191021/mlx.h"
@@ -50,7 +49,7 @@ int		mandelbrot(t_complex c, int max_iter);
 int		julia(t_complex z, t_complex k, int max_iter);
 
 // Rendering functions
-void	render_fractal(t_data *data);
+void	ft_render_fractal(t_data *data);
 
 // Event handling functions
 int		key_hook(int keycode, t_data *data);

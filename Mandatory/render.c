@@ -43,13 +43,31 @@ static	int	get_color(int iterations, int max_iter)
 	return (create_trgb(0, r, b));
 }
 
-void	render_fractal(t_data *data)
+static	void	ft_process_pixel(t_data *data, int x, int y)
 {
-	int			x;
-	int			y;
 	t_complex	c;
 	t_complex	z;
 	int			iterations;
+
+	c.real = (x - WIDTH / 2.0) / (0.5 * WIDTH * data->zoom) + data->offset_x;
+	c.imag = (y - HEIGHT / 2.0) / (0.5 * HEIGHT * data->zoom) + data->offset_y;
+	if (data->fractal_type == 1)
+		iterations = mandelbrot(c, MAX_ITERATIONS);
+	else if (data->fractal_type == 2)
+	{
+		z.real = c.real;
+		z.imag = c.imag;
+		iterations = julia(z, data->julia_k, MAX_ITERATIONS);
+	}
+	else
+		iterations = 0;
+	pixel_put(data, x, y, get_color(iterations, MAX_ITERATIONS));
+}
+
+void	ft_render_fractal(t_data *data)
+{
+	int	x;
+	int	y;
 
 	y = 0;
 	while (y < HEIGHT)
@@ -57,18 +75,7 @@ void	render_fractal(t_data *data)
 		x = 0;
 		while (x < WIDTH)
 		{
-			c.real = (x - WIDTH / 2.0) / (0.5 * WIDTH * data->zoom)
-				+ data->offset_x;
-			c.imag = (y - HEIGHT / 2.0) / (0.5 * HEIGHT * data->zoom)
-				+ data->offset_y;
-			if (data->fractal_type == 1)
-				iterations = mandelbrot(c, MAX_ITERATIONS);
-			else if (data->fractal_type == 2)
-			{
-				(z.real = c.real, z.imag = c.imag);
-				iterations = julia(z, data->julia_k, MAX_ITERATIONS);
-			}
-			pixel_put(data, x, y, get_color(iterations, MAX_ITERATIONS));
+			ft_process_pixel(data, x, y);
 			x++;
 		}
 		y++;

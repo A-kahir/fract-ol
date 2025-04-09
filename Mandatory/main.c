@@ -12,7 +12,7 @@
 
 #include "fractol.h"
 
-static void	print_usage(void)
+static void	ft_print_usage(void)
 {
 	write(1, "Usage: ./fractol [fractal_type]\n", 33);
 	write(1, "Available fractals_type:\n", 26);
@@ -21,7 +21,7 @@ static void	print_usage(void)
 	exit(0);
 }
 
-static	void	init_data(t_data *data)
+static	void	ft_init_data(t_data *data)
 {
 	data->mlx = NULL;
 	data->win = NULL;
@@ -34,7 +34,7 @@ static	void	init_data(t_data *data)
 	data->julia_k.imag = 0.156;
 }
 
-static	int	init_window(t_data *data)
+static	int	ft_init_window(t_data *data)
 {
 	data->mlx = mlx_init();
 	if (!data->mlx)
@@ -55,17 +55,14 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	if (argc != 2)
-		print_usage();
-	init_data(&data);
+		ft_print_usage();
+	ft_init_data(&data);
 	data.fractal_type = ft_atoi(argv[1]);
 	if (data.fractal_type < 1 || data.fractal_type > 2)
-		print_usage();
-	if (!init_window(&data))
-	{
-		printf("Error initializing window\n");
-		return (1);
-	}
-	render_fractal(&data);
+		ft_print_usage();
+	if (!ft_init_window(&data))
+		return (write(1, "Error initializing window\n", 27), 1);
+	ft_render_fractal(&data);
 	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 	mlx_key_hook(data.win, key_hook, &data);
 	mlx_mouse_hook(data.win, mouse_hook, &data);
