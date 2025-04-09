@@ -57,6 +57,8 @@ int		mouse_hook(int button, int x, int y, t_data *data);
 int		close_window(t_data *data);
 
 // Util functions
-int		ft_atoi(const char *str);
+double	ft_atoi(const char *str);
+int ft_strcmp(const char *s1, const char *s2);
+void mlx_functions(t_data data);
 
 #endif

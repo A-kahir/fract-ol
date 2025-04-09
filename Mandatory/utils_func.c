@@ -6,33 +6,56 @@
 /*   By: akahir <akahir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 13:28:06 by akahir            #+#    #+#             */
-/*   Updated: 2025/04/08 20:47:55 by akahir           ###   ########.fr       */
+/*   Updated: 2025/04/09 18:28:18 by akahir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	ft_atoi(const char *str)
+void mlx_functions(t_data data)
 {
-	int					i;
-	int					signe;
-	unsigned long long	result;
+	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+	mlx_key_hook(data.win, key_hook, &data);
+	mlx_mouse_hook(data.win, mouse_hook, &data);
+	mlx_hook(data.win, 17, 0, close_window, &data);
+	mlx_loop(data.mlx);
+}
 
-	signe = 1;
+int ft_strcmp(const char *s1, const char *s2)
+{
+	int i;
+
 	i = 0;
-	result = 0;
-	while (((str[i] >= 9 && str[i] <= 13) || str[i] == 32))
+	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;
-	if ((str[i] == '-') || (str[i] == '+'))
-	{
-		if (str[i] == '-')
-			signe = -1;
+	return (s1[i] - s2[i]);
+}
+
+double	ft_atoi(const char *str)
+{
+	double	result;
+	double	fraction;
+	int		sign;
+	int		i;
+
+	result = 0.0;
+	fraction = 0.1;
+	sign = 1;
+	i = 0;
+	if (str[i] == '-')
+		(sign = -1, i++);
+	else if (str[i] == '+')
 		i++;
-	}
 	while (str[i] >= '0' && str[i] <= '9')
+		result = result * 10.0 + (str[i++] - '0');
+	if (str[i] == '.')
 	{
-		result = ((result * 10) + (str[i] - '0'));
 		i++;
+		while (str[i] >= '0' && str[i] <= '9')
+		{
+			result = result + (str[i++] - '0') * fraction;
+			fraction *= 0.1;
+		}
 	}
-	return (result * signe);
+	return (result * sign);
 }

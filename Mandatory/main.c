@@ -14,11 +14,14 @@
 
 static void	ft_print_usage(void)
 {
-	write(1, "Usage: ./fractol [fractal_type]\n", 33);
-	write(1, "Available fractals_type:\n", 26);
-	write(1, "  1: Mandelbrot\n", 17);
-	write(1, "  2: Julia\n", 12);
-	exit(0);
+	write(2, "Usage: ./fractol [fractal_type] [params]\n", 41);
+	write(2, "Available fractals:\n", 20);
+	write(2, "  mandelbrot\n", 13);
+	write(2, "  julia [real] [imaginary]\n", 27);
+	write(2, "Examples:\n", 10);
+	write(2, "  ./fractol mandelbrot\n", 23);
+	write(2, "  ./fractol julia -0.8 0.156\n", 29);
+	exit(1);
 }
 
 static	void	ft_init_data(t_data *data)
@@ -30,8 +33,8 @@ static	void	ft_init_data(t_data *data)
 	data->zoom = 1.0;
 	data->offset_x = 0.0;
 	data->offset_y = 0.0;
-	data->julia_k.real = -0.8;
-	data->julia_k.imag = 0.156;
+	data->julia_k.real = 0.0;
+	data->julia_k.imag = 0.0;
 }
 
 static	int	ft_init_window(t_data *data)
@@ -54,19 +57,27 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	if (argc != 2)
-		ft_print_usage();
 	ft_init_data(&data);
-	data.fractal_type = ft_atoi(argv[1]);
-	if (data.fractal_type < 1 || data.fractal_type > 2)
+	if (argc < 2)
+		ft_print_usage();
+	if (ft_strcmp(argv[1], "mandelbrot") == 0)
+		data.fractal_type = 1;
+	else if (ft_strcmp(argv[1], "julia") == 0)
+	{
+		data.fractal_type = 2;
+		if (argc == 4)
+		{
+			data.julia_k.real = ft_atoi(argv[2]);
+			data.julia_k.imag = ft_atoi(argv[3]);
+		}
+		else if (argc != 2)
+			ft_print_usage();
+	}
+	else
 		ft_print_usage();
 	if (!ft_init_window(&data))
 		return (write(1, "Error initializing window\n", 27), 1);
 	ft_render_fractal(&data);
-	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
-	mlx_key_hook(data.win, key_hook, &data);
-	mlx_mouse_hook(data.win, mouse_hook, &data);
-	mlx_hook(data.win, 17, 0, close_window, &data);
-	mlx_loop(data.mlx);
+	mlx_functions(data);
 	return (0);
 }
